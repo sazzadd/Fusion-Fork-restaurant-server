@@ -21,7 +21,7 @@ const client = new MongoClient(uri, {
 });
 
 async function run() {
-  const carsCollection = client.db("car-rental").collection("cars");
+  const menuCollection = client.db("fusionFork").collection("menu");
   try {
     
     // await client.connect();
