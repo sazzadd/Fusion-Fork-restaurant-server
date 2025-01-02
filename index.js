@@ -23,14 +23,20 @@ const client = new MongoClient(uri, {
 async function run() {
   const menuCollection = client.db("fusionFork").collection("menu");
   const reviewsCollection = client.db("fusionFork").collection("reviews");
+  const cartCollection = client.db("fusionFork").collection("carts");
   try {
     app.get("/menu", async (req, res) => {
-      const result = await menuCollection.find().toArray()
-      res.send(result)
+      const result = await menuCollection.find().toArray();
+      res.send(result);
     });
     app.get("/reviews", async (req, res) => {
-      const result = await reviewsCollection.find().toArray()
-      res.send(result)
+      const result = await reviewsCollection.find().toArray();
+      res.send(result);
+    });
+    app.get("/carts", async (req, res) => {
+      const cartItem = req.body;
+      const result = await cartCollection.insertOne(cartItem);
+      res.send(result);
     });
     // await client.connect();
     // Send a ping to confirm a successful connection
