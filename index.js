@@ -26,8 +26,23 @@ async function run() {
   const cartCollection = client.db("fusionFork").collection("carts");
   const userCollection = client.db("fusionFork").collection("users");
   try {
+    app.get("/users", async (req, res) => {
+      const result = await userCollection.find().toArray();
+      res.send(result);
+    });
+    app.delete("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await cartCollection.deleteOne(query);
+      res.send(result);
+    });
     app.post("/users", async (req, res) => {
-      const users = req.body;
+      const user = req.body;
+      const query = { email: user.email };
+      const existingUser = await userCollection.findOne(query);
+      if (existingUser) {
+        return res.send({ massage: "user already eexist ", insertedId: null });
+      }
       const result = await userCollection.insertOne(user);
       res.send(result);
     });
