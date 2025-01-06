@@ -30,6 +30,16 @@ async function run() {
       const result = await userCollection.find().toArray();
       res.send(result);
     });
+    app.patch("/users/admin/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId() };
+      const updatedDoc = {
+        $set: {
+          role: "admin",
+        },
+      };
+      
+    });
     app.delete("/users/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
