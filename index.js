@@ -34,12 +34,27 @@ async function run() {
       res.send({ token });
     });
     // users related Api
-    app.get("/users", async (req, res) => {
-      const result = await userCollection.find().toArray();
-      res.send(result);
-    });
-    app.get("/users", async (req, res) => {
-      console.log(req.headers);
+    // app.get("/users", async (req, res) => {
+    //   const result = await userCollection.find().toArray();
+    //   res.send(result);
+    // });
+
+    // mdileware
+    const verifyToken = (req, res, next) => {
+      console.log("inside verify token", req.headers.authorization);
+      if (!req.headers.authorization) {
+        return res.status(401).send({ massage: "forbiddenn access" });
+      }
+      const token = req.headers.authorization.split(" ")[1];
+      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        if (err) {
+          return res.status(401).send({ massage: "forbiddenn access" });
+        }
+        req.decoded = decoded;
+        next();
+      });
+    };
+    app.get("/users", verifyToken, async (req, res) => {
       const result = await userCollection.find().toArray();
       res.send(result);
     });
@@ -52,6 +67,7 @@ async function run() {
         },
       };
       const result = await userCollection.updateOne(filter, updatedDoc);
+      res.send(result);
     });
     app.delete("/users/:id", async (req, res) => {
       const id = req.params.id;
