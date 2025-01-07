@@ -3,7 +3,7 @@ const app = expres();
 const cors = require("cors");
 require("dotenv").config();
 const port = process.env.PORT || 5000;
-var jwt = require('jsonwebtoken');
+var jwt = require("jsonwebtoken");
 // MIDLEWARE
 app.use(cors());
 app.use(expres.json());
@@ -26,7 +26,20 @@ async function run() {
   const cartCollection = client.db("fusionFork").collection("carts");
   const userCollection = client.db("fusionFork").collection("users");
   try {
+    app.post("/jwt", async (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: "1h",
+      });
+      res.send({ token });
+    });
+    // users related Api
     app.get("/users", async (req, res) => {
+      const result = await userCollection.find().toArray();
+      res.send(result);
+    });
+    app.get("/users", async (req, res) => {
+      console.log(req.headers);
       const result = await userCollection.find().toArray();
       res.send(result);
     });
