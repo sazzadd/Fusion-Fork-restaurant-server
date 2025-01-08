@@ -20,7 +20,6 @@ const client = new MongoClient(uri, {
   },
 });
 
-
 async function run() {
   const menuCollection = client.db("fusionFork").collection("menu");
   const reviewsCollection = client.db("fusionFork").collection("reviews");
@@ -58,6 +57,19 @@ async function run() {
     app.get("/users", verifyToken, async (req, res) => {
       const result = await userCollection.find().toArray();
       res.send(result);
+    });
+    app.get("/user/admin/:email", verifyToken, async (req, res) => {
+      const email = req.params.email;
+      if (email !== req.decoded.email) {
+        return res.status(403).send({ massage: "unauthorized access" });
+      }
+      const query = { email: email };
+      const user = await userCollection.findOne(query);
+      let admin = false;
+      if (user) {
+        admin.user?.role === "admin";
+      }
+      res.send({ admin });
     });
     app.patch("/users/admin/:id", async (req, res) => {
       const id = req.params.id;
