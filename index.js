@@ -20,6 +20,7 @@ const client = new MongoClient(uri, {
   },
 });
 
+
 async function run() {
   const menuCollection = client.db("fusionFork").collection("menu");
   const reviewsCollection = client.db("fusionFork").collection("reviews");
