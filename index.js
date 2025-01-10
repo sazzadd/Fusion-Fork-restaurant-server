@@ -133,6 +133,11 @@ async function run() {
       const result = await menuCollection.findOne(query);
       res.send(result);
     });
+    // menu patch
+    app.patch("/menu/:id", async (req, res) => {
+    
+    });
+
 
     app.get("/reviews", async (req, res) => {
       const result = await reviewsCollection.find().toArray();
