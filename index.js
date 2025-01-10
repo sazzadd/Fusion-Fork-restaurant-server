@@ -33,12 +33,7 @@ async function run() {
       });
       res.send({ token });
     });
-    // users related Api
-    // app.get("/users", async (req, res) => {
-    //   const result = await userCollection.find().toArray();
-    //   res.send(result);
-    // });
-
+ 
     // mdileware
     const verifyToken = (req, res, next) => {
       console.log("inside verify token", req.headers.authorization);
