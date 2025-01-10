@@ -135,7 +135,15 @@ async function run() {
     });
     // menu patch
     app.patch("/menu/:id", async (req, res) => {
-    
+    const item= req.body;
+    const id = req.params.id;
+    const filter = { _id: new ObjectId(id) };
+    const updatedDoc = {
+      $set: {
+        name:item.name,
+        category:
+      },
+    };
     });
 
 
