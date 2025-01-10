@@ -33,7 +33,7 @@ async function run() {
       });
       res.send({ token });
     });
- 
+
     // mdileware
     const verifyToken = (req, res, next) => {
       console.log("inside verify token", req.headers.authorization);
@@ -119,12 +119,14 @@ async function run() {
       const result = await menuCollection.insertOne(item);
       res.send(result);
     });
-    app.delete("/menu/:id", async (req, res) => {
+    // menu Item delete
+    app.delete("/menu/:id", verifyToken, verifyAdmin,  async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await menuCollection.deleteOne(query);
       res.send(result);
     });
+    // Menu find  One by Id
     app.get("/menu/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
