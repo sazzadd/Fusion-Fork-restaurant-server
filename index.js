@@ -1,7 +1,8 @@
 const expres = require("express");
 const app = expres();
+const stripe = require("stripe")('')
 const cors = require("cors");
-require("dotenv").config();
+require("dotenv").config(process.env.STRIPE_SECRET_KEY);
 const port = process.env.PORT || 5000;
 var jwt = require("jsonwebtoken");
 // MIDLEWARE
