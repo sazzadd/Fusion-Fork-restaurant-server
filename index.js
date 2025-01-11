@@ -175,6 +175,21 @@ async function run() {
       res.send(result);
       console.log("Delete Result:", result);
     });
+    app.post("/create-payment-intent", async (req, res) => {
+      const { price } = req.body;
+      const amount = parseInt(price*100)
+      // Create a PaymentIntent with the order amount and currency
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: amount,
+        currency: "usd",
+    
+        payment_method_types: ['card']
+      });
+    
+      res.send({
+        clientSecret: paymentIntent.client_secret,
+      });
+    });
     // await client.connect();
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
