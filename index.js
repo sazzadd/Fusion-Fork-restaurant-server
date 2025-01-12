@@ -202,7 +202,16 @@ async function run() {
         },
       };
       const deleteResult = await cartCollection.deleteMany(query);
-      res.send({paymentResult, deleteResult});
+      res.send({ paymentResult, deleteResult });
+    });
+    app.get("/payment/:email", async (req, res) => {
+      const query = req.params.id;
+      if (req.params.email !== req.decoded.email) {
+        return res.status(403).send({
+          massage: "forbideen access",
+        });
+      }
+      c
     });
     // await client.connect();
     // Send a ping to confirm a successful connection
