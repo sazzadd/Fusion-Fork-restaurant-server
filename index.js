@@ -39,7 +39,7 @@ async function run() {
 
     // mdileware
     const verifyToken = (req, res, next) => {
-      console.log("inside verify token", req.headers.authorization);
+      // console.log("inside verify token", req.headers.authorization);
       if (!req.headers.authorization) {
         return res.status(401).send({ massage: "forbiddenn access" });
       }
@@ -180,7 +180,7 @@ async function run() {
     app.post("/create-payment-intent", async (req, res) => {
       const { price } = req.body;
       const amount = Math.round(price * 100);
-   
+
       const paymentIntent = await stripe.paymentIntents.create({
         amount: amount,
         currency: "usd",
@@ -193,7 +193,10 @@ async function run() {
       });
     });
     app.post("/payment", async (req, res) => {
-      const payment = req.body
+      const payment = req.body;
+      const paymentResult = await paymentCollection.insertOne(payment);
+      console.log("payment info", payment);
+      res.send(paymentResult);
     });
     // await client.connect();
     // Send a ping to confirm a successful connection
