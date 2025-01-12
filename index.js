@@ -27,6 +27,7 @@ async function run() {
   const reviewsCollection = client.db("fusionFork").collection("reviews");
   const cartCollection = client.db("fusionFork").collection("carts");
   const userCollection = client.db("fusionFork").collection("users");
+  const paymentCollection = client.db("fusionFork").collection("payments");
   try {
     app.post("/jwt", async (req, res) => {
       const user = req.body;
@@ -190,6 +191,9 @@ async function run() {
       res.send({
         clientSecret: paymentIntent.client_secret,
       });
+    });
+    app.post("/payment", async (req, res) => {
+      const payment = req.body
     });
     // await client.connect();
     // Send a ping to confirm a successful connection
