@@ -195,10 +195,10 @@ async function run() {
     app.post("/payment", async (req, res) => {
       const payment = req.body;
       const paymentResult = await paymentCollection.insertOne(payment);
-      console.log("payment info", payment);
+      console.log("payment info", payment.cartId);
       const query = {
         _id: {
-          $in: payment.cartIds.map((id) => new ObjectId(id)),
+          $in: payment.cartId.map((id) => new ObjectId(id)),
         },
       };
       const deleteResult = await cartCollection.deleteMany(query);
