@@ -211,7 +211,8 @@ async function run() {
           massage: "forbideen access",
         });
       }
-      c
+      const result = await paymentCollection.find(query).toArray();
+      res.send(result);
     });
     // await client.connect();
     // Send a ping to confirm a successful connection
