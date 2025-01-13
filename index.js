@@ -214,6 +214,25 @@ async function run() {
       const result = await paymentCollection.find(query).toArray();
       res.send(result);
     });
+    app.get("/admin-stats", async (req, res) => {
+      const users = await userCollection.estimatedDocumentCount();
+      const menuItems = await menuCollection.estimatedDocumentCount();
+      const orders = await paymentCollection.estimatedDocumentCount();
+      const result = await paymentCollection.aggregate([{
+          $group:{
+            _id:null,
+            totalRevinue:{
+              $sum:'$price'
+            }
+          }
+      }])
+      res.send({
+        users,
+        menuItems,
+        orders,
+        
+      });
+    });
     // await client.connect();
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
